@@ -44,7 +44,7 @@ def generate(prompts: List[str], model: Transformer, tokenizer: Tokenizer, *, ma
     cache = RotatingBufferCache(model.args.n_layers, model.args.max_batch_size, cache_window, model.args.n_kv_heads, model.args.head_dim)
     cache.to(device=model.device, dtype=model.dtype)
     cache.reset()
-    
+
     # Bookkeeping
     logprobs = [[] for _ in range(B)]
     last_token_prelogits = None
@@ -107,7 +107,8 @@ def interactive(model_path: str, max_tokens: int = 35, temperature: float = 0.7)
 
     while True:
         prompt = input("Prompt: ")
-        res, _logprobs = generate([prompt], transformer, tokenizer, max_tokens)
+        res, _logprobs = generate([prompt], transformer, tokenizer,
+            max_tokens=max_tokens, temperature=temperature)
         print(res[0])
         print("=====================")
 
